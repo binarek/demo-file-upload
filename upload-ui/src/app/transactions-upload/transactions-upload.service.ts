@@ -10,14 +10,10 @@ export class TransactionsUploadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public upload(fileToUpload: File): Observable<HttpEvent<string[]>> {  // TODO typed errors
-    console.log("SEND");
-    console.log(fileToUpload);
-
+  upload(fileToUpload: File): Observable<HttpEvent<string[]>> {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
 
     return this.httpClient.post<string[]>('/api/transactions/upload', formData, { reportProgress: true, responseType: 'json', observe: 'events' });
-        // .map(() => { return true; });
   }
 }
