@@ -1,0 +1,11 @@
+<div class="container">
+    <h3>Upload file with transactions</h3>
+    <label for="upload-transactions-input">Choose File</label>
+    <input type="file"
+           id="upload-transactions-input"
+           (change)="selectFile($event)" />
+    <button (click)="upload()">Upload</button>
+    <ol *ngIf="uploadMessages && uploadMessages.length > 0" class="">
+        <li *ngFor="let msg of uploadMessages">{{msg}}</li>
+    </ol>
+</div>

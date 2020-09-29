@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { TransactionsComponent } from './transactions/transactions.component';
-import { TransactionsUploadComponent } from './transactions/transactions-upload/transactions-upload.component';
+import { TransactionsUploadComponent } from './transactions-upload/transactions-upload.component';
 
 @NgModule({
   declarations: [
