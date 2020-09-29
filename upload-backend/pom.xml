@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
+        <com.opencsv-version>5.2</com.opencsv-version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,12 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${com.opencsv-version}</version>
         </dependency>
     </dependencies>
 
