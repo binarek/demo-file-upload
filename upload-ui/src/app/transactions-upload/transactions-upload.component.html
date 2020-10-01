@@ -5,7 +5,12 @@
            id="upload-transactions-input"
            (change)="selectFile($event)" />
     <button (click)="upload()">Upload</button>
-    <ol *ngIf="uploadMessages && uploadMessages.length > 0" class="">
-        <li *ngFor="let msg of uploadMessages">{{msg}}</li>
-    </ol>
+    <ul *ngIf="uploadMessages && uploadMessages.length > 0">
+        <li *ngFor="let msg of uploadMessages">
+            <span>{{msg.lineNumber}}</span>
+            <ul>
+                <li *ngFor="let i of msg.errors">{{i}}</li>
+            </ul>
+        </li>
+    </ul>
 </div>
