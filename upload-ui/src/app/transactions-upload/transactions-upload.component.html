@@ -1,16 +1,31 @@
 <div class="container">
-    <h3>Upload file with transactions</h3>
-    <label for="upload-transactions-input">Choose File</label>
+  <div class="drop-container" appDragAndDrop (fileDropped)="selectFile($event)">
+    <img src="assets/icon_upload.svg" height="64px" alt=""/>
+    <p>Drag and drop file here</p>
+    <p>or</p>
+    <label for="upload-transactions-input">Select from your computer</label>
     <input type="file"
            id="upload-transactions-input"
-           (change)="selectFile($event)" />
+           (change)="selectFile($any($event).target?.files)"/>
+  </div>
+  <div *ngIf="fileToUpload" class="file-info-container">
+    <img src="assets/icon_file.svg" height="48px" alt=""/>
+    <div class="file-info">
+      <span>{{fileToUpload.name}}</span>
+      <span>Size: {{fileToUpload.size}}</span>
+      <div class="progress" [style.width]="progress + '%'">
+      </div>
+    </div>
+  </div>
+  <div>
     <button (click)="upload()">Upload</button>
     <ul *ngIf="uploadMessages && uploadMessages.length > 0">
-        <li *ngFor="let msg of uploadMessages">
-            <span>{{msg.lineNumber}}</span>
-            <ul>
-                <li *ngFor="let i of msg.errors">{{i}}</li>
-            </ul>
-        </li>
+      <li *ngFor="let msg of uploadMessages">
+        <span>Line number: {{msg.lineNumber}}</span>
+        <ul>
+          <li *ngFor="let i of msg.errors">{{i}}</li>
+        </ul>
+      </li>
     </ul>
+  </div>
 </div>

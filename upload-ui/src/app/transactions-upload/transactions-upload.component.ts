@@ -15,18 +15,15 @@ export class TransactionsUploadComponent implements OnInit {
 
   progress: number = 0;
   uploadMessages: TransactionsUploadError[] = [];
-
-  private fileToUpload: File | null = null;
+  fileToUpload: File | null = null;
 
   ngOnInit(): void {
   }
 
-  selectFile(event: Event) {
-    this.resetUpload();
-
-    const target = event.target as HTMLInputElement;
-    if (target.files) {
-      this.fileToUpload = target.files[0];
+  selectFile(files: FileList | null) {
+    if (files && files.length > 0) {
+      this.resetUpload();
+      this.fileToUpload = files[0];
     }
   }
 
