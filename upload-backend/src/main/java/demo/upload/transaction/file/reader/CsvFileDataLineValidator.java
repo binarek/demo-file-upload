@@ -1,5 +1,6 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.transaction.file.reader;
 
+import demo.upload.transaction.file.reader.model.CsvFileDataLine;
 import demo.upload.util.DateTimeProvider;
 import org.springframework.stereotype.Component;
 
@@ -55,7 +56,7 @@ class CsvFileDataLineValidator {
         } catch (DateTimeParseException e) {
             return List.of("Invalid date format, should be: yyyy-MM-dd");
         }
-        var today = dateTimeProvider.getNowLocalDate();
+        var today = dateTimeProvider.getCurrentLocalDate();
         if (parsedDate.isAfter(today)) {
             return List.of("Date cannot be in the future");
         }

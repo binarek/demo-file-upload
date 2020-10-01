@@ -1,8 +1,10 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.transaction.file.reader;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.exceptions.*;
+import demo.upload.transaction.file.reader.model.CsvFileDataLine;
+import demo.upload.transaction.file.FileLineError;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
@@ -41,7 +43,7 @@ public class TransactionFileReader {
         } else {
             errors = List.of(exception.getLocalizedMessage());
         }
-        return new FileLineError(exception.getLineNumber(), errors);
+        return FileLineError.of(exception.getLineNumber(), errors);
     }
 
     private static class CsvFileMappingStrategy extends HeaderColumnNameMappingStrategy<CsvFileDataLine> {

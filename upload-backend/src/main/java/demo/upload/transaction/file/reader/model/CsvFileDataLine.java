@@ -1,4 +1,4 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.transaction.file.reader.model;
 
 import com.opencsv.bean.CsvBindByName;
 

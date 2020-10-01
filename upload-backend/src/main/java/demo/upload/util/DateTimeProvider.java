@@ -10,7 +10,7 @@ public class DateTimeProvider {
 
     private final ZoneId ZONE_ID = ZoneId.of("Europe/Warsaw");
 
-    public LocalDate getNowLocalDate() {
+    public LocalDate getCurrentLocalDate() {
         return LocalDate.now(ZONE_ID);
     }
 }
