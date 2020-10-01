@@ -1,5 +1,6 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.rest.file;
 
+import demo.upload.rest.file.TransactionCsvFileDataLine;
 import demo.upload.util.DateTimeProvider;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +13,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-class CsvFileDataLineValidator {
+public class TransactionCsvFileDataLineValidator {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final DateTimeProvider dateTimeProvider;
 
-    CsvFileDataLineValidator(DateTimeProvider dateTimeProvider) {
+    public TransactionCsvFileDataLineValidator(DateTimeProvider dateTimeProvider) {
         this.dateTimeProvider = dateTimeProvider;
     }
 
-    List<String> validate(CsvFileDataLine line) {
+    public List<String> validate(TransactionCsvFileDataLine line) {
         var errors = new ArrayList<String>();
         errors.addAll(validateRelationships(line));
 
@@ -33,7 +34,7 @@ class CsvFileDataLineValidator {
         return errors;
     }
 
-    private List<String> validateRelationships(CsvFileDataLine line) {
+    private List<String> validateRelationships(TransactionCsvFileDataLine line) {
         if (Objects.equals(line.getReceiver(), line.getSender())) {
             return List.of("Receiver and seder cannot be equal");
         }

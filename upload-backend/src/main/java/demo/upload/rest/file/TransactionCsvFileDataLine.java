@@ -1,8 +1,8 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.rest.file;
 
 import com.opencsv.bean.CsvBindByName;
 
-public class CsvFileDataLine {
+public class TransactionCsvFileDataLine {
 
     @CsvBindByName(column = "nadawca")
     private String sender;

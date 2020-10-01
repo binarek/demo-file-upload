@@ -1,7 +1,7 @@
 package demo.upload.rest;
 
-import demo.upload.rest.transactions.reader.FileLineError;
-import demo.upload.rest.transactions.reader.TransactionFileReader;
+import demo.upload.rest.file.FileLineError;
+import demo.upload.rest.file.reader.TransactionFileReader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

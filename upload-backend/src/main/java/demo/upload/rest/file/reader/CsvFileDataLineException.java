@@ -1,4 +1,4 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.rest.file.reader;
 
 import com.opencsv.exceptions.CsvValidationException;
 

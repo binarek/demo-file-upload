@@ -1,4 +1,4 @@
-package demo.upload.rest.transactions.reader;
+package demo.upload.rest.file;
 
 import java.util.List;
 
