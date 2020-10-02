@@ -1,4 +1,4 @@
-package demo.upload.util;
+package demo.upload.domain.common;
 
 import org.springframework.stereotype.Component;
 

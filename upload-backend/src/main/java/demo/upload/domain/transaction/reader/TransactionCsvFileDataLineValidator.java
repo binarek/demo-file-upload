@@ -1,7 +1,6 @@
-package demo.upload.rest.file;
+package demo.upload.domain.transaction.reader;
 
-import demo.upload.rest.file.TransactionCsvFileDataLine;
-import demo.upload.util.DateTimeProvider;
+import demo.upload.domain.common.DateTimeProvider;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class TransactionCsvFileDataLineValidator {
+class TransactionCsvFileDataLineValidator {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -23,7 +22,7 @@ public class TransactionCsvFileDataLineValidator {
         this.dateTimeProvider = dateTimeProvider;
     }
 
-    public List<String> validate(TransactionCsvFileDataLine line) {
+    List<String> validate(TransactionCsvFileDataLine line) {
         var errors = new ArrayList<String>();
         errors.addAll(validateRelationships(line));
 
@@ -50,6 +49,9 @@ public class TransactionCsvFileDataLineValidator {
     }
 
     private List<String> validateDate(String date) {
+        if (date == null) {
+            return buildCannotBeEmptyError("Date");
+        }
         LocalDate parsedDate;
         try {
             parsedDate = LocalDate.parse(date, dateTimeFormatter);
@@ -64,6 +66,9 @@ public class TransactionCsvFileDataLineValidator {
     }
 
     private List<String> validateAmount(String amount) {
+        if (amount == null) {
+            return buildCannotBeEmptyError("Amount");
+        }
         BigDecimal parsedAmount;
         try {
             parsedAmount = new BigDecimal(amount);
@@ -82,7 +87,7 @@ public class TransactionCsvFileDataLineValidator {
 
     private static List<String> validateTransactionSide(String side, String sideName) {
         if (side == null) {
-            return List.of(sideName + " cannot be empty");
+            return buildCannotBeEmptyError(sideName);
         }
         var errors = new ArrayList<String>(2);
         if (side.length() != 5) {
@@ -92,5 +97,9 @@ public class TransactionCsvFileDataLineValidator {
             errors.add(sideName + " can contains only digits and capital letters");
         }
         return errors;
+    }
+
+    private static List<String> buildCannotBeEmptyError(String propertyName) {
+        return List.of(propertyName + " cannot be empty");
     }
 }

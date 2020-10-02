@@ -1,11 +1,10 @@
-package demo.upload.rest.file.reader;
+package demo.upload.domain.transaction.reader;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.exceptions.*;
-import demo.upload.rest.file.FileLineError;
-import demo.upload.rest.file.TransactionCsvFileDataLine;
-import demo.upload.rest.file.TransactionCsvFileDataLineValidator;
+import demo.upload.domain.file.FileLineError;
+import demo.upload.domain.file.FileValidationException;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
@@ -21,8 +20,8 @@ public class TransactionFileReader {
         this.transactionCsvFileDataLineValidator = transactionCsvFileDataLineValidator;
     }
 
-    public List<FileLineError> readErrors(Reader fileReader) {
-        var csvToBean = new CsvToBeanBuilder<TransactionCsvFileDataLine>(fileReader)
+    public void readTransactionsFromCsvFile(Reader csvFileReader) {
+        var csvToBean = new CsvToBeanBuilder<TransactionCsvFileDataLine>(csvFileReader)
                 .withType(TransactionCsvFileDataLine.class)
                 .withMappingStrategy(new CsvFileMappingStrategy(transactionCsvFileDataLineValidator))
                 .withIgnoreLeadingWhiteSpace(true)
@@ -32,9 +31,13 @@ public class TransactionFileReader {
 
         csvToBean.parse();  // to process CSV lines, method result may be used to implement logic for correct data
 
-        return csvToBean.getCapturedExceptions().stream()
+        var errors = csvToBean.getCapturedExceptions().stream()
                 .map(this::mapToCsvFileLineError)
                 .collect(Collectors.toList());
+
+        if (!errors.isEmpty()) {
+            throw new FileValidationException("Invalid file content", errors);
+        }
     }
 
     private FileLineError mapToCsvFileLineError(CsvException exception) {
@@ -51,7 +54,7 @@ public class TransactionFileReader {
 
         private final TransactionCsvFileDataLineValidator transactionCsvFileDataLineValidator;
 
-        public CsvFileMappingStrategy(TransactionCsvFileDataLineValidator transactionCsvFileDataLineValidator) {
+        private CsvFileMappingStrategy(TransactionCsvFileDataLineValidator transactionCsvFileDataLineValidator) {
             this.transactionCsvFileDataLineValidator = transactionCsvFileDataLineValidator;
             setType(TransactionCsvFileDataLine.class);
         }

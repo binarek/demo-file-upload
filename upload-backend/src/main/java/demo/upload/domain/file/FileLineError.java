@@ -1,4 +1,4 @@
-package demo.upload.rest.file;
+package demo.upload.domain.file;
 
 import java.util.List;
 

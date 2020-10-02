@@ -1,4 +1,4 @@
-package demo.upload.rest.file.reader;
+package demo.upload.domain.transaction.reader;
 
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -12,7 +12,7 @@ class CsvFileDataLineException extends CsvValidationException {
         this.errors = errors;
     }
 
-    public List<String> getErrors() {
+    List<String> getErrors() {
         return errors;
     }
 }
