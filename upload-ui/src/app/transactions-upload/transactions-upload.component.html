@@ -16,16 +16,19 @@
       <div class="progress" [style.width]="progress + '%'">
       </div>
     </div>
+    <button (click)="upload()">Upload</button>
   </div>
   <div>
-    <button (click)="upload()">Upload</button>
-    <ul *ngIf="uploadMessages && uploadMessages.length > 0">
-      <li *ngFor="let msg of uploadMessages">
-        <span>Line number: {{msg.lineNumber}}</span>
-        <ul>
-          <li *ngFor="let i of msg.errors">{{i}}</li>
-        </ul>
-      </li>
-    </ul>
+    <div>
+      <p><strong>{{uploadHeader}}</strong></p>
+      <ul *ngIf="uploadMessages && uploadMessages.length > 0">
+        <li *ngFor="let msg of uploadMessages">
+          <span>Line number: {{msg.lineNumber}}</span>
+          <ul>
+            <li *ngFor="let i of msg.errors">{{i}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

@@ -14,8 +14,10 @@ export class TransactionsUploadComponent implements OnInit {
   constructor(private transactionsUploadService: TransactionsUploadService) { }
 
   progress: number = 0;
-  uploadMessages: TransactionsUploadError[] = [];
   fileToUpload: File | null = null;
+
+  uploadHeader = '';
+  uploadMessages: TransactionsUploadError[] = [];
 
   ngOnInit(): void {
   }
@@ -29,6 +31,7 @@ export class TransactionsUploadComponent implements OnInit {
 
   upload() {
     if (this.fileToUpload != null) {
+      this.resetUpload();
       this.transactionsUploadService.upload(this.fileToUpload)
         .subscribe(
           event => this.handleEvent(event),
@@ -39,19 +42,28 @@ export class TransactionsUploadComponent implements OnInit {
 
   private resetUpload() {
     this.progress = 0;
+    this.uploadHeader = '';
     this.uploadMessages = [];
   }
 
-  private handleError(errorResponse: HttpErrorResponse) {
-    this.uploadMessages = errorResponse.error;
+  private handleError(res: HttpErrorResponse) {
+    this.uploadHeader = 'Unable to upload file';
+    if (res.error) {
+      if (res.error.detail) {
+        this.uploadHeader = this.uploadHeader + `: ${res.error.detail}`;
+      }
+      if (res.error.fileLineErrors) {
+        this.uploadMessages = res.error.fileLineErrors;
+      }
+    }
   }
 
-  private handleEvent(event: HttpEvent<TransactionsUploadError[]>) {
+  private handleEvent(event: HttpEvent<null>) {
     if (event.type === HttpEventType.UploadProgress && event.total) {
       this.progress = Math.round(100 * event.loaded / event.total);
 
-    } else if (event.type === HttpEventType.Response && event.body) {
-      this.uploadMessages = event.body;
+    } else if (event.type === HttpEventType.Response) {
+      this.uploadHeader = 'File successfully uploaded';
     }
   }
 }
