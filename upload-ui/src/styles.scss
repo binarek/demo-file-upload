@@ -10,11 +10,7 @@ body {
   background-color: #baffbd;
 }
 
-div {
-  color: inherit;
-}
-
-span {
+details, div, li, ul, span, summary {
   color: inherit;
 }
 
@@ -28,6 +24,11 @@ label {
   &:hover {
     cursor: pointer;
   }
+}
+
+ul {
+  padding: 2px 10px;
+  margin: 5px;
 }
 
 button {
@@ -47,7 +48,6 @@ button {
 }
 
 .container {
-
   background-color: snow;
   border-radius: 8px;
   border: 1px solid lightgrey;

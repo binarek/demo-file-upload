@@ -20,10 +20,10 @@
   </div>
   <app-alert *ngIf="uploadStatus" [type]="uploadStatus" [message]="uploadStatusMessage">
     <ul *ngIf="uploadFileLineErrors && uploadFileLineErrors.length > 0">
-      <li *ngFor="let msg of uploadFileLineErrors">
-        <span>Line number: {{msg.lineNumber}}</span>
+      <li *ngFor="let lineErrors of uploadFileLineErrors">
+        <span>at line {{lineErrors.lineNumber}}:</span>
         <ul>
-          <li *ngFor="let i of msg.errors">{{i}}</li>
+          <li *ngFor="let error of lineErrors.errors">{{error}}</li>
         </ul>
       </li>
     </ul>
