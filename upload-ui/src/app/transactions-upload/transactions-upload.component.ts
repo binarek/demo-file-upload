@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpEventType} from '@angular/common/http';
 
-import { TransactionsUploadService } from './transactions-upload.service';
-import { TransactionsUploadError } from "./transactions-upload-error.model";
+import {TransactionsUploadService} from './transactions-upload.service';
+import {TransactionsUploadError} from "./transactions-upload-error.model";
 
 @Component({
   selector: 'app-transactions-upload',
@@ -11,13 +11,15 @@ import { TransactionsUploadError } from "./transactions-upload-error.model";
 })
 export class TransactionsUploadComponent implements OnInit {
 
-  constructor(private transactionsUploadService: TransactionsUploadService) { }
+  constructor(private transactionsUploadService: TransactionsUploadService) {
+  }
 
-  progress: number = 0;
   fileToUpload: File | null = null;
 
-  uploadHeader = '';
-  uploadMessages: TransactionsUploadError[] = [];
+  uploadProgress: number = 0;
+  uploadStatus: 'success' | 'error' | null = null;
+  uploadStatusMessage = '';
+  uploadFileLineErrors: TransactionsUploadError[] = [];
 
   ngOnInit(): void {
   }
@@ -34,36 +36,48 @@ export class TransactionsUploadComponent implements OnInit {
       this.resetUpload();
       this.transactionsUploadService.upload(this.fileToUpload)
         .subscribe(
-          event => this.handleEvent(event),
-          errorResponse => this.handleError(errorResponse)
+          event => this.handleUploadEvent(event),
+          errorResponse => this.handleUploadError(errorResponse)
         )
     }
   }
 
   private resetUpload() {
-    this.progress = 0;
-    this.uploadHeader = '';
-    this.uploadMessages = [];
+    this.uploadStatus = null;
+    this.uploadProgress = 0;
+    this.uploadStatusMessage = '';
+    this.uploadFileLineErrors = [];
   }
 
-  private handleError(res: HttpErrorResponse) {
-    this.uploadHeader = 'Unable to upload file';
-    if (res.error) {
-      if (res.error.detail) {
-        this.uploadHeader = this.uploadHeader + `: ${res.error.detail}`;
-      }
-      if (res.error.fileLineErrors) {
-        this.uploadMessages = res.error.fileLineErrors;
-      }
-    }
-  }
-
-  private handleEvent(event: HttpEvent<null>) {
+  private handleUploadEvent(event: HttpEvent<null>) {
     if (event.type === HttpEventType.UploadProgress && event.total) {
-      this.progress = Math.round(100 * event.loaded / event.total);
+      this.uploadProgress = Math.round(100 * event.loaded / event.total);
 
     } else if (event.type === HttpEventType.Response) {
-      this.uploadHeader = 'File successfully uploaded';
+      this.uploadStatusMessage = 'File successfully uploaded';
+      this.uploadStatus = 'success';
     }
+  }
+
+  private handleUploadError(res: HttpErrorResponse) {
+    this.uploadStatusMessage = TransactionsUploadComponent.buildUploadStatusMessage(res);
+    this.uploadFileLineErrors = TransactionsUploadComponent.buildUploadFileLineErrors(res);
+    this.uploadStatus = 'error';
+  }
+
+  private static buildUploadStatusMessage(res: HttpErrorResponse): string {
+    const standardMessage = 'Cannot upload file';
+    if (res.error && res.error.detail) {
+      return standardMessage + `: ${res.error.detail}`;
+    } else {
+      return standardMessage + ': Something went wrong, please contact the Admin';
+    }
+  }
+
+  private static buildUploadFileLineErrors(res: HttpErrorResponse): TransactionsUploadError[] {
+    if (res.error && res.error.fileLineErrors) {
+      return res.error.fileLineErrors;
+    }
+    return [];
   }
 }

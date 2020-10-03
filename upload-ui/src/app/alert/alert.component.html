@@ -1,0 +1,8 @@
+<div *ngIf="message && !closed" [ngClass]="['alert-container', type]">
+  <span class="type-name">{{typeName()}}!</span> {{message}}
+  <span class="close-btn" (click)="closed = true">&times;</span>
+  <div *ngIf="details.children.length != 0" class="details-header">Details:</div>
+  <div #details>
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -7,7 +7,7 @@
   border: dashed 3px #979797;
   border-radius: 8px;
   padding: 3rem;
-  margin: 16px 8px;
+  margin: 16px 0;
   text-align: center;
 
   &.drag-over {
@@ -24,18 +24,38 @@
 }
 
 .file-info-container {
+  margin: 16px 0;
   display: flex;
   flex-direction: row;
 }
 
 .file-info {
+  padding: 2px 12px;
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  .file-name {
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .file-size {
+    color: grey;
+  }
 }
 
 .progress {
+  margin: 2px 2px 2px 0;
   height: 7px;
   border-radius: 4px;
-  background-color: lightgreen;
+  background-color: lightblue;
+
+  &.upload-success {
+    background-color: lightgreen;
+  }
+
+  &.upload-error {
+    background-color: #a94442;
+  }
 }

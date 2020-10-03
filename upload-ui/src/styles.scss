@@ -10,6 +10,14 @@ body {
   background-color: #baffbd;
 }
 
+div {
+  color: inherit;
+}
+
+span {
+  color: inherit;
+}
+
 input {
   &[type="file"] {
     display: none;

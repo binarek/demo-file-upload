@@ -9,26 +9,23 @@
            (change)="selectFile($any($event).target?.files)"/>
   </div>
   <div *ngIf="fileToUpload" class="file-info-container">
-    <img src="assets/icon_file.svg" height="48px" alt=""/>
+    <img src="assets/icon_file.svg" height="55px" alt=""/>
     <div class="file-info">
-      <span>{{fileToUpload.name}}</span>
-      <span>Size: {{fileToUpload.size}}</span>
-      <div class="progress" [style.width]="progress + '%'">
+      <span class="file-name">{{fileToUpload.name}}</span>
+      <span class="file-size">Size: {{fileToUpload.size | bytes}}</span>
+      <div [ngClass]="{'progress' : true, 'upload-success' : uploadStatus === 'success', 'upload-error' : uploadStatus === 'error'}" [style.width]="uploadProgress + '%'">
       </div>
     </div>
     <button (click)="upload()">Upload</button>
   </div>
-  <div>
-    <div>
-      <p><strong>{{uploadHeader}}</strong></p>
-      <ul *ngIf="uploadMessages && uploadMessages.length > 0">
-        <li *ngFor="let msg of uploadMessages">
-          <span>Line number: {{msg.lineNumber}}</span>
-          <ul>
-            <li *ngFor="let i of msg.errors">{{i}}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <app-alert *ngIf="uploadStatus" [type]="uploadStatus" [message]="uploadStatusMessage">
+    <ul *ngIf="uploadFileLineErrors && uploadFileLineErrors.length > 0">
+      <li *ngFor="let msg of uploadFileLineErrors">
+        <span>Line number: {{msg.lineNumber}}</span>
+        <ul>
+          <li *ngFor="let i of msg.errors">{{i}}</li>
+        </ul>
+      </li>
+    </ul>
+  </app-alert>
 </div>
